@@ -16,7 +16,7 @@
   // Capture the cards once, in their authored order.
   var cards = Array.prototype.slice.call(grid.querySelectorAll(".card"));
 
-  var label = document.querySelector(".filter-label");
+  var tagChip = document.querySelector(".filter-tag");
 
   // The hash *is* the tag class, e.g. #tag-robot or #tag-2009. Any card class
   // works, so new tags need no JS changes.
@@ -40,7 +40,7 @@
 
     // Drive the active-filter status bar (the CSS shows it on body.filtering).
     document.body.classList.toggle("filtering", !!tag);
-    if (label) label.textContent = tag ? "Showing: " + prettyTag(tag) : "";
+    if (tagChip) tagChip.textContent = tag ? prettyTag(tag) : "";
 
     var visible = cards.filter(function (card) {
       return !tag || card.classList.contains(tag);

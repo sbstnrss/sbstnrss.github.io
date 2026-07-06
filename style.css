@@ -25,7 +25,7 @@ body {
   color: var(--ink);
   background: var(--bg);
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -153,7 +153,7 @@ body.themed {
 .card:hover .card-title span { border-bottom: 1px solid; }
 
 .card-excerpt {
-  font-size: 0.9em;                 /* 11.7px */
+  font-size: 1.0em;
   text-align: justify;
   padding: 8px 15px 8px 0;
   color: var(--muted);
@@ -164,7 +164,7 @@ body.themed {
   flex-wrap: wrap;
   gap: 5px;
   font-family: var(--mono);
-  font-size: 0.8em;                 /* 10.4px */
+  font-size: 0.9em;
 }
 /* tags render as rounded chips; clicking one filters the grid by that tag */
 .card-tags a {
@@ -201,19 +201,29 @@ body.themed {
 }
 
 /* Active-filter status bar — shown by masonry.js (body.filtering) while any
-   tag is active; holds the "Showing: <tag>" label and the clear link. */
+   tag is active; holds the "Showing:" text, the active-tag chip and the clear
+   link. Its vertical spacing below the nav matches the title↔nav gap (22px),
+   and the tag + clear render as the same rounded chips as the nav links. */
 .filter-status {
   display: none;
   text-align: center;
-  padding: 14px 20px 0;
-  font-family: var(--mono);
-  font-size: 0.8em;
+  padding: 22px 20px 0;
   color: var(--muted);
 }
 body.filtering .filter-status { display: block; }
-.filter-label { margin-right: 6px; }
-.filter-clear { color: var(--muted); }
-.filter-clear:hover { color: var(--accent); }
+.filter-label { margin-right: 3px; }
+/* active-tag chip + clear link reuse the nav-link chip style */
+.filter-tag,
+.filter-clear {
+  display: inline-block;
+  margin: 0 3px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--ink) 9%, var(--bg));
+  color: var(--muted);
+  line-height: 1.6;
+}
+.filter-clear:hover { background: var(--accent); color: #fff; }
 
 /* --------------------------------------------------------------------------
    Project pages
@@ -377,8 +387,8 @@ body.filtering .filter-status { display: block; }
   /* always show at least two thumbnails per row on phones */
   .grid { column-count: 2; column-width: auto; padding: 0 8px; }
   .card { padding: 0 6px; margin: 14px 0 8px; }
-  .card-excerpt { font-size: 0.85em; padding: 6px 8px 6px 0; }
-  .card-tags { font-size: 0.72em; }
+  .card-excerpt { font-size: 0.9em; padding: 6px 8px 6px 0; }
+  .card-tags { font-size: 0.8em; }
   .card-title { padding: 5px 8px 0 0; }
 
   .text-col { flex-basis: 100%; }
