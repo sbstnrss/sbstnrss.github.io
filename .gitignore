@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Editor / OS cruft
+*.swp
+Thumbs.db
+
+# AI agent tooling (see team rules)
+.claude/settings.local.json
+temp/

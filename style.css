@@ -1,0 +1,387 @@
+/* ==========================================================================
+   sebastianruss.com — static rebuild
+   Single shared stylesheet. No JavaScript.
+   Theming: pages set --bg / --ink on <body> to tint an individual project.
+   ========================================================================== */
+
+:root {
+  --bg: #fff;
+  --ink: #111;
+  --accent: #ff3366;
+  --muted: color-mix(in srgb, var(--ink) 55%, var(--bg));
+  --faint: color-mix(in srgb, var(--ink) 38%, var(--bg));
+  --hairline: color-mix(in srgb, var(--ink) 18%, var(--bg));
+  --content: 1000px;   /* media / content column (matches the original site) */
+  --measure: 1000px;   /* readable text column */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Lucida Console", Monaco, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a { color: var(--ink); text-decoration: none; }
+img { max-width: 100%; }
+
+/* --------------------------------------------------------------------------
+   LQIP placeholder (lqip.js)
+   lqip.js wraps each <img> in a .lqip-frame carrying its 1x1 dominant-colour
+   preview GIF as a covering background. The image loads natively but is held
+   hidden until fully decoded, then revealed whole (.is-loaded). The box is
+   sized by the image's width/height attributes, so the placeholder shows at the
+   right size. Pure progressive enhancement — without JS the plain <img> tags
+   load normally (no frame).
+   -------------------------------------------------------------------------- */
+.lqip-frame {
+  display: block;
+  background-image: var(--lqip, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  line-height: 0;
+}
+.lqip-frame > img { display: block; width: 100%; height: auto; margin: 0; }
+.lqip-frame:not(.is-loaded) > img { visibility: hidden; }
+
+/* On a tinted (custom-background) project, all text uses the single ink color —
+   tags, footer and muted copy included — instead of the mixed-down greys. */
+body.themed {
+  --muted: var(--ink);
+  --faint: var(--ink);
+  --hairline: color-mix(in srgb, var(--ink) 40%, var(--bg));
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Header + navigation
+   -------------------------------------------------------------------------- */
+.site-header {
+  text-align: center;
+  padding: 40px 20px 0;
+}
+
+.logo {
+  display: inline-block;
+  font-size: 1.2em;                 /* 15.6px */
+  letter-spacing: 0.2em;
+  line-height: 1.3;
+  padding-left: 0.2em;
+}
+.logo a:hover { color: var(--accent); }
+
+.nav {
+  margin-top: 22px;
+  line-height: 2.4;
+}
+/* nav links use the same rounded chip style as the tags */
+.nav a {
+  display: inline-block;
+  margin: 0 3px;
+  padding: 2px 10px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--ink) 9%, var(--bg));
+  color: var(--muted);
+  line-height: 1.6;
+}
+.nav a:hover { background: var(--accent); color: #fff; }
+.nav a.active { background: var(--accent); color: #fff; }
+
+/* --------------------------------------------------------------------------
+   Home: full-width organic masonry (CSS multi-column, no JS)
+   Cards of differing heights tile organically down each column instead of
+   snapping into aligned rows. Balancing spreads a filtered category across the
+   columns so it still uses the full width.
+   -------------------------------------------------------------------------- */
+.grid {
+  width: 100%;
+  margin: 22px auto 0;
+  padding: 0 15px;
+  column-width: 300px;              /* fills the viewport: ~6 cols at 1920 */
+  column-gap: 0;
+}
+
+.card {
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+  padding: 0 10px;
+  margin: 20px 0 10px;
+  vertical-align: top;
+}
+
+/* JS-enhanced masonry (masonry.js): the grid becomes a row of equal-width
+   columns the script packs by shortest-column, so a filtered category still
+   fills the full width. Falls back to the CSS multi-column above without JS. */
+.js .grid {
+  display: flex;
+  align-items: flex-start;
+  column-width: auto;
+}
+.js .masonry-col {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.2s ease;
+}
+.card:hover .card-image img { opacity: 0.9; }
+
+.card-title { padding: 6px 15px 0 0; }
+.card:hover .card-title span { border-bottom: 1px solid; }
+
+.card-excerpt {
+  font-size: 0.9em;                 /* 11.7px */
+  text-align: justify;
+  padding: 8px 15px 8px 0;
+  color: var(--muted);
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 0.8em;                 /* 10.4px */
+}
+/* tags render as rounded chips; clicking one filters the grid by that tag */
+.card-tags a {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--ink) 9%, var(--bg));
+  color: var(--muted);
+  line-height: 1.6;
+}
+.card-tags a:hover { background: var(--accent); color: #fff; }
+
+/* --------------------------------------------------------------------------
+   Category / tag filter
+   Every tag is a filter, addressed as #tag-<slug> (nav links use the same
+   scheme). masonry.js reads the hash and re-flows the grid to matching cards.
+   Without JS, the hidden #tag-* anchors below drive a :target fallback for the
+   three main categories only (they precede the header + grid so the ~ sibling
+   rules can reach both).
+   -------------------------------------------------------------------------- */
+.filter-target { display: none; }
+
+#tag-product:target      ~ .grid .card:not(.tag-product),
+#tag-illustration:target ~ .grid .card:not(.tag-illustration),
+#tag-graphic:target      ~ .grid .card:not(.tag-graphic) {
+  display: none;
+}
+
+#tag-product:target      ~ .site-header .nav a.nav-products,
+#tag-illustration:target ~ .site-header .nav a.nav-illustrations,
+#tag-graphic:target      ~ .site-header .nav a.nav-graphics {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Active-filter status bar — shown by masonry.js (body.filtering) while any
+   tag is active; holds the "Showing: <tag>" label and the clear link. */
+.filter-status {
+  display: none;
+  text-align: center;
+  padding: 14px 20px 0;
+  font-family: var(--mono);
+  font-size: 0.8em;
+  color: var(--muted);
+}
+body.filtering .filter-status { display: block; }
+.filter-label { margin-right: 6px; }
+.filter-clear { color: var(--muted); }
+.filter-clear:hover { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Project pages
+   -------------------------------------------------------------------------- */
+/* prev / grid / next */
+.project-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 22px 20px 0;
+}
+.project-nav a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  line-height: 1;
+}
+.project-nav a:hover { color: var(--accent); }
+.project-nav .arrow { font-size: 22px; }
+.project-nav .grid-icon { width: 17px; height: 17px; display: block; }
+.project-nav .grid-icon rect { fill: currentColor; }
+
+.project-title {
+  text-align: center;
+  padding: 22px 20px 0 calc(20px + 0.2em);   /* left pad offsets trailing letter-spacing so it stays centered */
+  font-size: 1.2em;
+  line-height: 1.3;
+}
+
+.project {
+  max-width: var(--content);
+  margin: 0 auto;
+  padding: 22px 20px 0;
+}
+
+.project-content { text-align: left; }
+
+/* full-width stacked images */
+.image-single { margin: 0 0 clamp(12px, 1.6vw, 22px); }
+.image-single img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 0 clamp(12px, 1.6vw, 22px);
+}
+.image-single img:last-child { margin-bottom: 0; }
+/* With JS the frame (not the img) carries the between-image spacing. */
+.image-single .lqip-frame { margin: 0 0 clamp(12px, 1.6vw, 22px); }
+.image-single .lqip-frame:last-child { margin-bottom: 0; }
+.image-single .lqip-frame img { margin: 0; }
+
+/* responsive video embeds (Vimeo) */
+.video {
+  position: relative;
+  width: 100%;
+  margin: 0 0 clamp(12px, 1.6vw, 22px);
+  background: #000;
+}
+.video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* two-up image grid */
+.image-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.6vw, 22px);
+  margin: 0 0 clamp(12px, 1.6vw, 22px);
+}
+/* Flex item is the <img> without JS, or its .lqip-frame wrapper with JS. */
+.image-row > img,
+.image-row > .lqip-frame {
+  flex: 1 1 calc(50% - 22px);
+  min-width: 220px;
+}
+.image-row img { display: block; height: auto; }
+
+/* text columns — constrained to a readable measure, centered under wide media */
+.text-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 5%;
+  max-width: var(--measure);
+  margin: 44px auto 0;
+  line-height: 1.65;
+}
+.text-col {
+  flex: 1 1 42%;
+  min-width: 240px;
+  text-align: justify;
+}
+
+.centered { text-align: center; line-height: 1.9; }
+.centered a { border-bottom: 1px solid transparent; }
+.centered a:hover { border-bottom-color: currentColor; }
+
+/* "View all projects" */
+.view-all {
+  text-align: center;
+  padding: 56px 20px 8px;
+}
+.view-all a:hover { border-bottom: 1px solid; }
+
+.project-footer {
+  max-width: var(--measure);
+  margin: 48px auto 0;
+  padding: 0 20px;
+  font-family: var(--mono);
+  font-size: 0.8em;
+  color: var(--muted);
+  text-align: center;
+}
+/* footer tags render as the same rounded chips as the home cards */
+.project-footer .tags a {
+  display: inline-block;
+  margin: 3px 3px 0;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--ink) 9%, var(--bg));
+  color: var(--muted);
+}
+.project-footer .tags a:hover { background: var(--accent); color: #fff; }
+
+/* Info / contact simple text pages */
+.lead { line-height: 1.7; }
+.lead .text-col { font-size: 1em; }
+
+/* Legal / Impressum long-form text */
+.legal .project-content { max-width: 760px; margin: 0 auto; }
+.legal h4 { font-size: 1.15em; margin: 1.8em 0 0.4em; }
+.legal ul { padding-left: 1.2em; }
+.legal li { margin-bottom: 0.3em; }
+.legal a { text-decoration: underline; }
+.legal a:hover { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: var(--muted);
+  padding: 56px 5% 26px;
+}
+.site-footer a { color: inherit; }
+.site-footer .to-top { display: block; margin-bottom: 40px; }
+.site-footer a:hover { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 700px) {
+  /* always show at least two thumbnails per row on phones */
+  .grid { column-count: 2; column-width: auto; padding: 0 8px; }
+  .card { padding: 0 6px; margin: 14px 0 8px; }
+  .card-excerpt { font-size: 0.85em; padding: 6px 8px 6px 0; }
+  .card-tags { font-size: 0.72em; }
+  .card-title { padding: 5px 8px 0 0; }
+
+  .text-col { flex-basis: 100%; }
+  .nav a { padding: 2px 8px; margin: 0 2px; }
+  .project-nav { gap: 30px; }
+}
