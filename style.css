@@ -113,7 +113,7 @@ body.themed {
    -------------------------------------------------------------------------- */
 .grid {
   width: 100%;
-  margin: 22px auto 0;
+  margin: 14px auto 0;
   padding: 0 15px;
   column-width: 300px;              /* fills the viewport: ~6 cols at 1920 */
   column-gap: 0;
@@ -386,7 +386,7 @@ body.filtering .filter-status { display: block; }
 @media screen and (max-width: 700px) {
   /* always show at least two thumbnails per row on phones */
   .grid { column-count: 2; column-width: auto; padding: 0 8px; }
-  .card { padding: 0 6px; margin: 14px 0 8px; }
+  .card { padding: 0 6px; margin: 20px 0 8px; }
   .card-excerpt { font-size: 0.9em; padding: 6px 8px 6px 0; }
   .card-tags { font-size: 0.8em; }
   .card-title { padding: 8px 8px 0 0; }
