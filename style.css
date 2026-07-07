@@ -149,7 +149,7 @@ body.themed {
 }
 .card:hover .card-image img { opacity: 0.9; }
 
-.card-title { padding: 6px 15px 0 0; }
+.card-title { padding: 12px 15px 0 0; }
 .card:hover .card-title span { border-bottom: 1px solid; }
 
 .card-excerpt {
@@ -250,7 +250,7 @@ body.filtering .filter-status { display: block; }
 .project-title {
   text-align: center;
   padding: 22px 20px 0 calc(20px + 0.2em);   /* left pad offsets trailing letter-spacing so it stays centered */
-  font-size: 1.2em;
+  font-size: 1.1em;
   line-height: 1.3;
 }
 
@@ -389,7 +389,7 @@ body.filtering .filter-status { display: block; }
   .card { padding: 0 6px; margin: 14px 0 8px; }
   .card-excerpt { font-size: 0.9em; padding: 6px 8px 6px 0; }
   .card-tags { font-size: 0.8em; }
-  .card-title { padding: 5px 8px 0 0; }
+  .card-title { padding: 8px 8px 0 0; }
 
   .text-col { flex-basis: 100%; }
   .nav a { padding: 2px 8px; margin: 0 2px; }
