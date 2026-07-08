@@ -105,11 +105,24 @@ around), a visible `.project-title`, then `.project-content`, a `.project-footer
 
 Inside `.project-content`, content is a sequence of:
 - `.image-single` — one or more full-width stacked images
-- `.image-row` — a 2-up responsive image grid
+- `.image-row` — a 2-up responsive image grid. Each cell is an `<img>` or, for
+  animated content, a self-hosted `<video>` (see below); both are styled as flex
+  items.
 - `.video` — a responsive Vimeo embed (aspect-ratio wrapper + `<iframe>`); the only
   third-party dependency. It loads `player.vimeo.com` but is not our own script.
 - `.text-cols` › `.text-col` — side-by-side text columns (original is EN + DE)
 - `.centered` — centered link/text block
+
+**Animated clips are self-hosted `<video>`, not GIF.** A short looping animation is
+a muted autoplay `<video src="…​.mp4" autoplay loop muted playsinline preload="auto"
+width height style="background:#rrggbb" aria-label="…">` — H.264 in an MP4 (which
+plays in every browser and is smaller than VP9/WebM at this size, so no `<source>`
+fallback is needed). Keep `width`/`height` to reserve the box, and set the inline
+`background` to the clip's dominant colour as an instant LQIP-style placeholder
+(`lqip.js` only wraps `<img>`, so videos get no frame). Convert a source GIF with
+`ffmpeg -i in.gif -movflags +faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libx264 -crf 23 -an out.mp4`
+(`-pix_fmt yuv420p` also drops the GIF's alpha, which VP9 otherwise chokes on).
+This typically cuts weight by ~85%. See `Siteless.html` for the canonical example.
 
 ### Image loading (LQIP + skeleton)
 

@@ -299,13 +299,16 @@ body.filtering .filter-status { display: block; }
   gap: clamp(12px, 1.6vw, 22px);
   margin: 0 0 clamp(12px, 1.6vw, 22px);
 }
-/* Flex item is the <img> without JS, or its .lqip-frame wrapper with JS. */
+/* Flex item is the <img> without JS, or its .lqip-frame wrapper with JS.
+   A muted autoplay <video> (converted from a GIF) is a flex item too. */
 .image-row > img,
+.image-row > video,
 .image-row > .lqip-frame {
   flex: 1 1 calc(50% - 22px);
   min-width: 220px;
 }
-.image-row img { display: block; height: auto; }
+.image-row img,
+.image-row video { display: block; height: auto; }
 
 /* text columns — constrained to a readable measure, centered under wide media */
 .text-cols {
