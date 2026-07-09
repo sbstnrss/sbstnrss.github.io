@@ -329,12 +329,14 @@ body.filtering .filter-status { display: block; }
 .centered a { border-bottom: 1px solid transparent; }
 .centered a:hover { border-bottom-color: currentColor; }
 
-/* "View all projects" */
-.view-all {
+/* "View all projects" / "Back to top" */
+.view-all,
+.back-to-top {
   text-align: center;
   padding: 56px 20px 8px;
 }
-.view-all a:hover { border-bottom: 1px solid; }
+.view-all a:hover,
+.back-to-top a:hover { color: var(--accent); }
 
 .project-footer {
   max-width: var(--measure);
@@ -380,7 +382,6 @@ body.filtering .filter-status { display: block; }
   padding: 56px 5% 26px;
 }
 .site-footer a { color: inherit; }
-.site-footer .to-top { display: block; margin-bottom: 40px; }
 .site-footer a:hover { color: var(--accent); }
 
 /* --------------------------------------------------------------------------
