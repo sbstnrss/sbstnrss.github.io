@@ -124,12 +124,22 @@ fallback is needed). Keep `width`/`height` to reserve the box, and set the inlin
 (`-pix_fmt yuv420p` also drops the GIF's alpha, which VP9 otherwise chokes on).
 This typically cuts weight by ~85%. See `Siteless.html` for the canonical example.
 
-The `width`/`height` attributes must state the **encoded** dimensions (`ffprobe`
-them — the `trunc(…/2)*2` scaler above silently rounds an odd source down by a
+The `width`/`height` attributes must keep the encoded **aspect ratio** (`ffprobe`
+it — the `trunc(…/2)*2` scaler above silently rounds an odd source down by a
 pixel). Any mismatch letterboxes the frame and shows the inline `background` as a
-stray edge. `style.css` also gives every `<video>` `object-fit: cover` so the
-sub-pixel rounding of a fractional-width box (masonry columns) cannot leak that
-background as a hairline border either — a bug that surfaced on iOS Safari.
+stray edge. `style.css` also gives every `<video>` `object-fit: cover` so the same
+background cannot leak through sub-pixel rounding inside the box.
+
+**A `<video>` in a card thumbnail must be clipped by `.card-image`.** WebKit (iOS
+Safari, and iOS Chrome — also WebKit) composites `<video>` in its own layer;
+because a masonry column is a fractional width, that layer's edge falls between
+device pixels and is anti-aliased against the transparent backdrop, painting a
+grey hairline that appears and disappears as you zoom. It is the layer edge
+itself, so no `background` colour fixes it. `style.css` therefore gives
+`.card-image` `overflow: hidden` and the video a `transform: scale(1.02)`, so the
+anti-aliased edge lands outside the box and the uncomposited box clips it. Videos
+inside `.image-row` are full-bleed flex items with no such wrapper — if the
+hairline ever shows there, they need the same treatment (a clipping wrapper).
 
 ### Image loading (LQIP + skeleton)
 

@@ -148,10 +148,16 @@ body.themed {
   height: auto;
   transition: opacity 0.2s ease;
 }
-/* Fill the box: the default contain-fit rounds the video frame to whole pixels
-   inside a fractional-width box, leaking a hairline of the placeholder
-   background at the edges (visible on iOS Safari at some zoom levels). */
-.card-image video { object-fit: cover; }
+/* WebKit composites <video> in its own layer. In a masonry column the card is a
+   fractional width, so that layer's edge falls between device pixels and gets
+   anti-aliased against the transparent backdrop — a grey hairline that comes and
+   goes with the zoom level. Overscale the video so its own edge lands outside the
+   .card-image box and the (uncomposited) box clips it instead. */
+.card-image { overflow: hidden; }
+.card-image video {
+  object-fit: cover;
+  transform: scale(1.02);
+}
 .card:hover .card-image img,
 .card:hover .card-image video { opacity: 0.9; }
 
