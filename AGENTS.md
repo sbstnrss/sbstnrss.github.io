@@ -113,33 +113,34 @@ Inside `.project-content`, content is a sequence of:
 - `.text-cols` › `.text-col` — side-by-side text columns (original is EN + DE)
 - `.centered` — centered link/text block
 
-**Animated clips are self-hosted `<video>`, not GIF.** A short looping animation is
-a muted autoplay `<video src="…​.mp4" autoplay loop muted playsinline preload="auto"
-width height style="background:#rrggbb" aria-label="…">` — H.264 in an MP4 (which
-plays in every browser and is smaller than VP9/WebM at this size, so no `<source>`
-fallback is needed). Keep `width`/`height` to reserve the box, and set the inline
-`background` to the clip's dominant colour as an instant LQIP-style placeholder
-(`lqip.js` only wraps `<img>`, so videos get no frame). Convert a source GIF with
+**Animated clips inside a project page are self-hosted `<video>`, not GIF.** A short
+looping animation is a muted autoplay `<video src="…​.mp4" autoplay loop muted
+playsinline preload="auto" width height style="background:#rrggbb" aria-label="…">` —
+H.264 in an MP4 (which plays in every browser and is smaller than VP9/WebM at this
+size, so no `<source>` fallback is needed). Keep `width`/`height` to reserve the box,
+and set the inline `background` to the clip's dominant colour as an instant
+LQIP-style placeholder (`lqip.js` only wraps `<img>`, so videos get no frame).
+Convert a source GIF with
 `ffmpeg -i in.gif -movflags +faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -c:v libx264 -crf 23 -an out.mp4`
 (`-pix_fmt yuv420p` also drops the GIF's alpha, which VP9 otherwise chokes on).
 This typically cuts weight by ~85%. See `Siteless.html` for the canonical example.
 
-The `width`/`height` attributes must keep the encoded **aspect ratio** (`ffprobe`
-it — the `trunc(…/2)*2` scaler above silently rounds an odd source down by a
-pixel). Any mismatch letterboxes the frame and shows the inline `background` as a
-stray edge. `style.css` also gives every `<video>` `object-fit: cover` so the same
-background cannot leak through sub-pixel rounding inside the box.
-
-**A `<video>` in a card thumbnail must be clipped by `.card-image`.** WebKit (iOS
-Safari, and iOS Chrome — also WebKit) composites `<video>` in its own layer;
-because a masonry column is a fractional width, that layer's edge falls between
-device pixels and is anti-aliased against the transparent backdrop, painting a
-grey hairline that appears and disappears as you zoom. It is the layer edge
-itself, so no `background` colour fixes it. `style.css` therefore gives
-`.card-image` `overflow: hidden` and the video a `transform: scale(1.02)`, so the
-anti-aliased edge lands outside the box and the uncomposited box clips it. Videos
-inside `.image-row` are full-bleed flex items with no such wrapper — if the
-hairline ever shows there, they need the same treatment (a clipping wrapper).
+**Never put a `<video>` in a card thumbnail — an animated card is an animated WebP
+`<img>`.** WebKit (iOS Safari, and iOS Chrome, which is also WebKit) gives `<video>`
+its own GPU compositing layer, and in a masonry column (a fractional width) that
+layer's edge rasterises as a grey hairline that flickers while scrolling and
+vanishes when you zoom right in — [WebKit bug 184025](https://bugs.webkit.org/show_bug.cgi?id=184025),
+open and unfixed. It is drawn by the compositor, so nothing you set on the element
+(background colour, `object-fit`, an `overflow: hidden` wrapper, an overscaling
+`transform`) removes it; all of those were tried and none worked. An `<img>` is
+painted as ordinary page content and has no such layer, so an animated WebP simply
+does not have the bug — and it needs no `autoplay`/`loop` attributes (the loop count
+is baked into the file: `gif2webp -loop 0`), so unlike `<video>` it also keeps
+animating in iOS Low Power Mode. It costs more bytes than the equivalent MP4 (1.25 MB
+vs 360 KB for the haystack clip) — that is the price of the fix. It behaves like any
+other thumbnail: `lqip.js` wraps it, `make previews` stamps its `data-lqip` (the tool
+reads `.webp` via `sips`), and `width`/`height` reserve the box for `masonry.js`. See
+the Haystack Europe 2018 card in `index.html`.
 
 ### Image loading (LQIP + skeleton)
 

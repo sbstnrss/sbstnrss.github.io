@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate dominant-colour placeholders for every image in assets/img.
 
-For each raster original (jpg/png/gif) this writes a sibling ``<stem>_preview.gif``
+For each raster original (jpg/png/gif/webp) this writes a sibling ``<stem>_preview.gif``
 holding a single pixel of the image's average colour, and stamps the same colour
 onto every ``<img>`` in the site's HTML as a ``data-lqip="#rrggbb"`` attribute.
 ``lqip.js`` uses that inline colour as a low-quality image placeholder while the
@@ -25,7 +25,7 @@ import zlib
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASSETS = os.path.join(REPO, "assets", "img")
 
-SOURCE_EXTS = (".jpg", ".jpeg", ".png", ".gif")
+SOURCE_EXTS = (".jpg", ".jpeg", ".png", ".gif", ".webp")
 PREVIEW_SUFFIX = "_preview.gif"
 
 # Fallback tint for (near-)transparent images, so transparent logos get a neutral

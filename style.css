@@ -141,25 +141,13 @@ body.themed {
   min-width: 0;
 }
 
-.card-image img,
-.card-image video {
+.card-image img {
   display: block;
   width: 100%;
   height: auto;
   transition: opacity 0.2s ease;
 }
-/* WebKit composites <video> in its own layer. In a masonry column the card is a
-   fractional width, so that layer's edge falls between device pixels and gets
-   anti-aliased against the transparent backdrop — a grey hairline that comes and
-   goes with the zoom level. Overscale the video so its own edge lands outside the
-   .card-image box and the (uncomposited) box clips it instead. */
-.card-image { overflow: hidden; }
-.card-image video {
-  object-fit: cover;
-  transform: scale(1.02);
-}
-.card:hover .card-image img,
-.card:hover .card-image video { opacity: 0.9; }
+.card:hover .card-image img { opacity: 0.9; }
 
 .card-title { padding: 12px 15px 0 0; }
 .card:hover .card-title span { border-bottom: 1px solid; }
@@ -321,7 +309,6 @@ body.filtering .filter-status { display: block; }
 }
 .image-row img,
 .image-row video { display: block; height: auto; }
-.image-row video { object-fit: cover; }
 
 /* text columns — constrained to a readable measure, centered under wide media */
 .text-cols {
