@@ -124,6 +124,13 @@ fallback is needed). Keep `width`/`height` to reserve the box, and set the inlin
 (`-pix_fmt yuv420p` also drops the GIF's alpha, which VP9 otherwise chokes on).
 This typically cuts weight by ~85%. See `Siteless.html` for the canonical example.
 
+The `width`/`height` attributes must state the **encoded** dimensions (`ffprobe`
+them — the `trunc(…/2)*2` scaler above silently rounds an odd source down by a
+pixel). Any mismatch letterboxes the frame and shows the inline `background` as a
+stray edge. `style.css` also gives every `<video>` `object-fit: cover` so the
+sub-pixel rounding of a fractional-width box (masonry columns) cannot leak that
+background as a hairline border either — a bug that surfaced on iOS Safari.
+
 ### Image loading (LQIP + skeleton)
 
 Every `<img>` gets a low-quality placeholder while it loads (the manu.ninja

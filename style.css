@@ -148,6 +148,10 @@ body.themed {
   height: auto;
   transition: opacity 0.2s ease;
 }
+/* Fill the box: the default contain-fit rounds the video frame to whole pixels
+   inside a fractional-width box, leaking a hairline of the placeholder
+   background at the edges (visible on iOS Safari at some zoom levels). */
+.card-image video { object-fit: cover; }
 .card:hover .card-image img,
 .card:hover .card-image video { opacity: 0.9; }
 
@@ -311,6 +315,7 @@ body.filtering .filter-status { display: block; }
 }
 .image-row img,
 .image-row video { display: block; height: auto; }
+.image-row video { object-fit: cover; }
 
 /* text columns — constrained to a readable measure, centered under wide media */
 .text-cols {
