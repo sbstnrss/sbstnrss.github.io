@@ -201,6 +201,12 @@ box so the placeholder shows at the right size.
 
 ## Verify a change
 
+**Don't drive the browser to verify unless explicitly asked** — the maintainer
+checks visually themselves, faster, whenever the local server is running (`make
+start`). Default to the static guards below (grep + `make previews`) and a careful
+read of the diff; only open a browser / throttle the network when the maintainer
+asks for it. What follows is the manual checklist the maintainer runs.
+
 Open `index.html` in a browser; click a nav category **and** a tag chip (e.g. a
 year) and confirm the grid re-flows to only matching cards spread across the full
 width, the "Showing: <tag>" bar appears, "× Show all" clears it, and the

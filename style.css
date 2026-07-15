@@ -316,7 +316,7 @@ body.filtering .filter-status { display: block; }
   flex-wrap: wrap;
   gap: 16px 5%;
   max-width: var(--measure);
-  margin: 0 auto 0;
+  margin: clamp(28px, 3.5vw, 44px) auto 0;
   line-height: 1.65;
 }
 .text-col {
