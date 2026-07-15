@@ -324,6 +324,9 @@ body.filtering .filter-status { display: block; }
   min-width: 240px;
   text-align: justify;
 }
+/* multiple paragraphs per language column (e.g. Haystack, MICES) */
+.text-col p { margin: 0 0 1em; }
+.text-col p:last-child { margin-bottom: 0; }
 
 .centered { text-align: center; line-height: 1.9; }
 .centered a { border-bottom: 1px solid transparent; }
