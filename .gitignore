@@ -8,3 +8,7 @@ Thumbs.db
 # AI agent tooling (see team rules)
 .claude/settings.local.json
 temp/
+
+# Temporary stuff
+FINDABILITY.md
+OPTIMIZATION.md
