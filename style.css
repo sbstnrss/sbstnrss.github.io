@@ -11,6 +11,7 @@
   --muted: color-mix(in srgb, var(--ink) 55%, var(--bg));
   --faint: color-mix(in srgb, var(--ink) 38%, var(--bg));
   --hairline: color-mix(in srgb, var(--ink) 18%, var(--bg));
+  --gap: clamp(12px, 1.6vw, 22px);   /* space between stacked / side-by-side media */
   --content: 1000px;   /* media / content column (matches the original site) */
   --measure: 1000px;   /* readable text column */
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -263,16 +264,16 @@ body.filtering .filter-status { display: block; }
 .project-content { text-align: left; }
 
 /* full-width stacked images */
-.image-single { margin: 0 0 clamp(12px, 1.6vw, 22px); }
+.image-single { margin: 0 0 var(--gap); }
 .image-single img {
   display: block;
   width: 100%;
   height: auto;
-  margin: 0 0 clamp(12px, 1.6vw, 22px);
+  margin: 0 0 var(--gap);
 }
 .image-single img:last-child { margin-bottom: 0; }
 /* With JS the frame (not the img) carries the between-image spacing. */
-.image-single .lqip-frame { margin: 0 0 clamp(12px, 1.6vw, 22px); }
+.image-single .lqip-frame { margin: 0 0 var(--gap); }
 .image-single .lqip-frame:last-child { margin-bottom: 0; }
 .image-single .lqip-frame img { margin: 0; }
 
@@ -280,7 +281,7 @@ body.filtering .filter-status { display: block; }
 .video {
   position: relative;
   width: 100%;
-  margin: 0 0 clamp(12px, 1.6vw, 22px);
+  margin: 0 0 var(--gap);
   background: #000;
 }
 .video iframe {
@@ -296,8 +297,8 @@ body.filtering .filter-status { display: block; }
 .image-row {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(12px, 1.6vw, 22px);
-  margin: 0 0 clamp(12px, 1.6vw, 22px);
+  gap: var(--gap);
+  margin: 0 0 var(--gap);
 }
 /* Flex item is the <img> without JS, or its .lqip-frame wrapper with JS.
    A muted autoplay <video> (converted from a GIF) is a flex item too. */
@@ -324,9 +325,6 @@ body.filtering .filter-status { display: block; }
   min-width: 240px;
   text-align: justify;
 }
-/* multiple paragraphs per language column (e.g. Haystack, MICES) */
-.text-col p { margin: 0 0 1em; }
-.text-col p:last-child { margin-bottom: 0; }
 
 .centered { text-align: center; line-height: 1.9; }
 .centered a { border-bottom: 1px solid transparent; }

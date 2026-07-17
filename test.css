@@ -1,0 +1,63 @@
+/* --------------------------------------------------------------------------
+   Test.html only — a meta block above the project images.
+   Loaded after style.css by Test.html and by no other page, so the rest of
+   the site is untouched.
+
+   The intro is a 6-column grid inside the site's normal centered --content
+   width: the meta on the left half, the English text on the right half. The
+   meta is itself three of those columns — Client/Year/Sector in the first,
+   the longer entries in the remaining two. The inner grid repeats the outer
+   gap, so the meta boxes land exactly on the outer grid's columns.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --meta-line: 1.65;   /* = the .text-cols line-height */
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--gap);
+  max-width: var(--measure);
+  /* No top margin: .project's own 22px padding then matches the 22px between
+     the grid symbol and the title. Bottom is two media gaps. */
+  margin: 0 auto calc(2 * var(--gap));
+  line-height: var(--meta-line);
+}
+
+.project-meta {
+  grid-column: 1 / 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+/* the longer entries get two of the meta's three columns */
+.meta-col:last-child { grid-column: span 2; }
+
+.intro-text {
+  grid-column: 4 / 7;
+  text-align: left;
+}
+
+.meta-label { display: block; }
+.meta-value { display: block; color: var(--muted); }
+
+/* A hyphen divides two items. Being a line of text it occupies exactly one
+   line box, so the meta lines stay on the body text's baseline grid by
+   construction — no spacing arithmetic, and it inherits the ink colour. */
+.meta-item + .meta-item::before { content: "-"; display: block; }
+
+/* stack meta above the text on phones. The row gap matches the intro's bottom
+   margin, so meta → text → images are separated by the same two media gaps. */
+@media screen and (max-width: 700px) {
+  .intro {
+    grid-template-columns: 1fr;
+    row-gap: calc(2 * var(--gap));
+  }
+  .project-meta,
+  .intro-text { grid-column: auto; }
+  /* the two meta boxes share the width evenly once stacked */
+  .project-meta { grid-template-columns: 1fr 1fr; }
+  .meta-col:last-child { grid-column: auto; }
+}
